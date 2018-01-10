@@ -5,7 +5,11 @@ var dataset = require('./dataset.json');
   greater than 100000
   assign the resulting new array to `hundredThousandairs`
 */
-var hundredThousandairs = null;
+var hundredThousandairs = dataset.bankBalances.filter(function (d) {
+  return d.amount > 100000
+})
+
+
 
 /*
   DO NOT MUTATE DATA.
@@ -24,7 +28,11 @@ var hundredThousandairs = null;
     }
   assign the resulting new array to `datasetWithRoundedDollar`
 */
-var datasetWithRoundedDollar = null;
+var datasetWithRoundedDollar = dataset.bankBalances.map(function (d) {
+  d['rounded'] = Math.round(d.amount);
+  return d
+});
+
 
 /*
   DO NOT MUTATE DATA.
@@ -49,10 +57,23 @@ var datasetWithRoundedDollar = null;
     }
   assign the resulting new array to `roundedDime`
 */
-var datasetWithRoundedDime = null;
+var datasetWithRoundedDime = dataset.bankBalances.map(function (d) {
+  const newObj = Object.assign({}, d)
+  newObj['roundedDime'] = Math.round(d.amount * 10) / 10;
+  delete newObj.rounded;
+  return newObj
+})
+
+
 
 // set sumOfBankBalances to be the sum of all value held at `amount` for each bank object
-var sumOfBankBalances = null;
+var sumOfBankBalances = dataset.bankBalances.reduce(function (all, items) {
+
+  all += parseFloat(items.amount)
+  return all;
+}, 0)
+
+var sumOfBankBalances = parseFloat(sumOfBankBalances.toFixed(2));
 
 /*
   from each of the following states:
@@ -65,7 +86,18 @@ var sumOfBankBalances = null;
   take each `amount` and add 18.9% interest to it rounded to the nearest cent
   and then sum it all up into one value saved to `sumOfInterests`
  */
-var sumOfInterests = null;
+
+
+
+var sumOfInterests= dataset.bankBalances.filter(function (items) {
+
+  return items.state === 'WI' || items.state === 'IL'|| items.state === 'WY' || items.state === 'OH' || items.state === 'GA' || items.state ==='DE';
+})
+
+console.log(sumOfInterests);
+
+
+
 
 /*
   aggregate the sum of bankBalance amounts
@@ -151,15 +183,15 @@ var anyStatesInHigherStateSum = null;
 
 
 module.exports = {
-  hundredThousandairs : hundredThousandairs,
-  datasetWithRoundedDollar : datasetWithRoundedDollar,
-  datasetWithRoundedDime : datasetWithRoundedDime,
-  sumOfBankBalances : sumOfBankBalances,
-  sumOfInterests : sumOfInterests,
-  sumOfHighInterests : sumOfHighInterests,
-  stateSums : stateSums,
-  lowerSumStates : lowerSumStates,
-  higherStateSums : higherStateSums,
-  areStatesInHigherStateSum : areStatesInHigherStateSum,
-  anyStatesInHigherStateSum : anyStatesInHigherStateSum
+  hundredThousandairs: hundredThousandairs,
+  datasetWithRoundedDollar: datasetWithRoundedDollar,
+  datasetWithRoundedDime: datasetWithRoundedDime,
+  sumOfBankBalances: sumOfBankBalances,
+  sumOfInterests: sumOfInterests,
+  sumOfHighInterests: sumOfHighInterests,
+  stateSums: stateSums,
+  lowerSumStates: lowerSumStates,
+  higherStateSums: higherStateSums,
+  areStatesInHigherStateSum: areStatesInHigherStateSum,
+  anyStatesInHigherStateSum: anyStatesInHigherStateSum
 };
